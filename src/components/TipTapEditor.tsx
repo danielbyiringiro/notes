@@ -52,7 +52,7 @@ export default ({note}: Props) =>
 
     return (
         <>
-            <div className="flex">
+            <div className="flex justify-start">
                 {editor && <TipTapMenuBar editor={editor}/> }
                 <Button disabled variant={"outline"}>
                     {saveNote.isPending ? 'Saving...' : 'Saved'}
