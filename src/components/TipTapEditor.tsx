@@ -16,9 +16,6 @@ type Props = {note: NoteType}
 export default ({note}: Props) =>
 {
     const [editorState, setEditorState] = React.useState(note.editorState || "")
-    const {complete, completion} = useCompletion({
-        api: '/api/completion',
-    })
     const saveNote = useMutation({
         mutationFn: async () => {
             const response = await axios.post('/api/saveNote', {
@@ -27,35 +24,16 @@ export default ({note}: Props) =>
         });
         return response.data;
     }})
-    const customText = Text.extend({
-        addKeyboardShortcuts()
-        {
-            return {
-                'Shift-a': () => {
-                    // take the last 30 words
-                    const prompt = this.editor.getText().split(' ').slice(-30).join(' ')
-                    complete(prompt)
-                    return true;
-                }
-            }
-        }
-    })
+
     const editor = useEditor({
         autofocus: true,
-        extensions: [StarterKit, customText],
+        extensions: [StarterKit],
         content: editorState,
         onUpdate: ({editor}) =>
         {
             setEditorState(editor.getHTML())
         }
     })
-    const lastCompletion = React.useRef('')
-    React.useEffect(() => {
-        if (!editor || !completion) return;
-        const diff = completion.slice(lastCompletion.current.length)
-        lastCompletion.current = completion
-        editor.commands.insertContent(diff)
-    }, [completion, editor])
     const debouncedEditorState = useDebounce(editorState, 500)
     React.useEffect(() =>
     {
@@ -84,14 +62,6 @@ export default ({note}: Props) =>
                 <EditorContent editor={editor} />
             </div>
             <div className="h-4"></div>
-            <span className="text-sm">
-                Tip: Press {" "}
-                <kbd
-                className="px-2 py-1.5 ext-xs font-semibold tex-gray-800 bg-gray-100 border border-gray-200 rounded-lg">
-                    Shift + A
-                </kbd>{" "}
-                for AI autocomplete
-            </span>
         </>
     )
 }
