@@ -51,10 +51,12 @@ export default ({note}: Props) =>
     }, [debouncedEditorState])
 
     return (
-        <>
+        <div className="w-full">
             <div className="flex">
                 {editor && <TipTapMenuBar editor={editor}/> }
-                <Button disabled variant={"outline"}>
+                <Button disabled variant={"outline"}
+                className="ml-auto"
+                >
                     {saveNote.isPending ? 'Saving...' : 'Saved'}
                 </Button>
             </div>
@@ -62,6 +64,6 @@ export default ({note}: Props) =>
                 <EditorContent editor={editor} />
             </div>
             <div className="h-4"></div>
-        </>
+        </div>
     )
 }

@@ -1,7 +1,15 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
     images: {
-        domains: ['oaidalleapiprodscus.blob.core.windows.net', 'firebasestorage.googleapis.com']
+        remotePatterns: [
+            {
+                hostname: 'firebasestorage.googleapis.com',
+            },
+            {
+                hostname: 'oaidalleapiprodscus.blob.core.windows.net',
+            }
+        ],
     },
     typescript: {
         ignoreBuildErrors: true

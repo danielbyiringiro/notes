@@ -9,13 +9,14 @@ import { db } from "@/lib/db";
 import { $notes } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 export default async () =>
 {
     const {userId} = auth();
     if (!userId)
     {
-        return
+        redirect("/sign-in")
     } 
 
     const notes = await db.select().from($notes).where(eq($notes.userId, userId!));
@@ -41,8 +42,6 @@ export default async () =>
                     <div className="h-8"></div>
                     <Separator />
                     <div className="h-8"></div>
-                    {/* list all the notes */}
-                    {/* Make the div conditional */}
                     {notes.length === 0 && (
                         <div className="text-center">
                             <h2 className="text-xl text-gray-500">You have no notes yet</h2>
